@@ -1,11 +1,15 @@
 import styled from "styled-components";
-import { transparentize } from "polished";
+import { transparentize, lighten } from "polished";
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  position: relative;
+  margin-bottom: 60px;
+  z-index: 1000;
+  border-radius: 12px;
+`;
 
 export const SearchBox = styled.div`
   position: relative;
-  margin-bottom: 60px;
 
   input {
     flex: 1;
@@ -28,7 +32,7 @@ export const SearchBox = styled.div`
     }
 
     &:focus {
-      border-color: ${({ theme }) => theme.regularText};
+      box-shadow: 0px 0px 12px rgba(20, 42, 91, 0.2);
     }
   }
 
@@ -43,4 +47,29 @@ export const SearchBox = styled.div`
 
 export const SearchResults = styled.div`
   position: absolute;
+  padding: 42px 30px 30px 30px;
+  background: ${({ theme }) => lighten(0.3, theme.background)};
+  width: 100%;
+  top: 100%;
+  margin-top: -12px;
+  z-index: -1;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0px 0px 12px rgba(20, 42, 91, 0.2);
+`;
+
+export const NoResults = styled.div`
+  color: ${({ theme }) => theme.regularText};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  img {
+    width: 27px;
+    margin-bottom: 6px;
+  }
+
+  p {
+    text-align: center;
+  }
 `;
