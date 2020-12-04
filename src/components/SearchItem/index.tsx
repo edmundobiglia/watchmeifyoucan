@@ -2,7 +2,7 @@ import React from "react";
 import TextTruncate from "react-text-truncate";
 
 import Logo from "../Logo";
-import GlassesIcon from "../GlassesIcon";
+import GlassesIcon from "../icons/GlassesIcon";
 
 import { Item, DummyPoster } from "./styles";
 

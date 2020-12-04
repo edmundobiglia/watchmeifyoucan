@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 
-import api from "../../services/api";
 import Loader from "../Loader";
 import SearchItem from "../SearchItem";
 import { Container, SearchBox, SearchResults, NoResults } from "./styles";
@@ -9,68 +8,15 @@ import searchIcon from "../../assets/search-icon.svg";
 import resetInputIcon from "../../assets/reset.svg";
 import searchErrorIcon from "../../assets/no-results.svg";
 
-interface SearchResult {
-  id: number;
-  title: string;
-  name: string;
-  original_title: string;
-  original_name: string;
-  overview: string;
-  poster_path: string;
-  release_date: string;
-  media_type: string;
-  first_air_date: string;
-  genre_ids: number[];
-}
+import useSearch from "../../hooks/useSearch";
 
 const Search = () => {
   const [searchInput, setSearchInput] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [loadingResults, setLoadingResults] = useState(false);
   const [searchError, setSearchError] = useState("");
 
-  useEffect(() => {
-    console.log(!!searchInput);
-    setLoadingResults(true);
-    setSearchError("");
+  const nodeRef = useRef(null);
 
-    let timeout: any;
-
-    if (searchInput) {
-      timeout = setTimeout(() => {
-        api
-          .get(
-            `3/search/multi?api_key=${process.env.REACT_APP_TMDB_API_KEY}&query=${searchInput}&page=1&append_to_response=budget`,
-            {
-              headers: { Authorization: `Bearer ${process.env.REACT_APP_TMDB_TOKEN}` },
-            }
-          )
-          .then((response) => {
-            const filteredResults = response.data.results
-              .filter((result: SearchResult) => result.media_type !== "person")
-              .slice(0, 5);
-
-            if (filteredResults.length === 0) {
-              setSearchError("No results found.");
-            }
-
-            setLoadingResults(false);
-
-            setSearchResults(filteredResults);
-          })
-          .catch(() => {
-            setLoadingResults(false);
-            setSearchError("Search error. Try again.");
-          });
-      }, 300);
-    } else {
-      setSearchResults([]);
-    }
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [searchInput]);
+  const { searchResults, loadingResults } = useSearch(searchInput, setSearchError);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -105,12 +51,13 @@ const Search = () => {
       </SearchBox>
 
       <CSSTransition
+        nodeRef={nodeRef}
         in={!!searchInput}
         timeout={200}
         classNames="fade-in-down"
         unmountOnExit
       >
-        <SearchResults>
+        <SearchResults ref={nodeRef}>
           {loadingResults ? (
             <Loader />
           ) : (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 
 import GlobalStyle from "./styles/global";
@@ -8,12 +8,19 @@ import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const [theme, setTheme] = useState("light");
+  const savedDarkModeState =
+    JSON.parse(`${localStorage.getItem("watchmeifyoucan:dark-mode")}`) || false;
+
+  const [darkMode, setDarkMode] = useState<boolean>(savedDarkModeState);
+
+  useEffect(() => {
+    localStorage.setItem("watchmeifyoucan:dark-mode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   return (
-    <ThemeProvider theme={theme === "light" ? light : dark}>
+    <ThemeProvider theme={darkMode ? dark : light}>
       <GlobalStyle />
-      <Header />
+      <Header darkMode={darkMode} setDarkMode={setDarkMode} />
       <Dashboard />
     </ThemeProvider>
   );

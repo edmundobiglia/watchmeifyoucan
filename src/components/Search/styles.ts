@@ -18,21 +18,26 @@ export const SearchBox = styled.div`
     padding: 18px;
     font-size: 15px;
     border-radius: 12px;
-    background: ${({ theme }) => theme.foreground};
+    background-color: ${({ theme }) => theme.foreground};
     color: ${({ theme }) => theme.hightlightText};
     font-weight: 300;
     padding-right: 57px;
     letter-spacing: 0.3px;
-    transition: border 200ms;
     border: 1px solid transparent;
+
+    transition: border 200ms linear, background-color 200ms linear, color 200ms linear;
 
     &::placeholder {
       color: ${({ theme }) => transparentize("0.6", theme.hightlightText)};
       font-style: italic;
+
+      transition: color 200ms linear;
     }
 
     &:focus {
       border: 1px solid ${({ theme }) => theme.regularText};
+
+      transition: border-color 200ms linear;
     }
   }
 
@@ -49,15 +54,16 @@ export const SearchBox = styled.div`
 export const SearchResults = styled.div`
   position: absolute;
   padding: 42px 30px 30px 30px;
-  background: ${({ theme }) => lighten(0.3, theme.background)};
+  background-color: ${({ theme }) => lighten(0.3, theme.background)};
   width: 100%;
   top: 100%;
   margin-top: -12px;
   z-index: -1;
   border-radius: 0 0 12px 12px;
   box-shadow: 0px 0px 12px rgba(20, 42, 91, 0.2);
-  transition: opacity 300ms, transform 300ms;
   min-height: 130px;
+
+  transition: opacity 300ms, transform 300ms, background-color 200ms linear;
 `;
 
 export const NoResults = styled.div`
@@ -66,6 +72,8 @@ export const NoResults = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  transition: color 200ms linear;
 
   img {
     width: 27px;

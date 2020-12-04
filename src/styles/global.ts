@@ -12,7 +12,8 @@ export default createGlobalStyle`
     font: 16px Nunito, sans-serif;
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
-    background: ${({ theme }) => theme.background};
+    background-color: ${({ theme }) => theme.background};
+    transition: background-color 200ms linear;
   }
 
   button, input {
