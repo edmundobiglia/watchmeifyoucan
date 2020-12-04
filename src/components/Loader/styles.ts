@@ -6,6 +6,6 @@ export const Container = styled.div`
   align-items: center;
 
   img {
-    width: 60px;
+    width: 56px;
   }
 `;

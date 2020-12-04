@@ -32,16 +32,17 @@ export const SearchBox = styled.div`
     }
 
     &:focus {
-      box-shadow: 0px 0px 12px rgba(20, 42, 91, 0.2);
+      border: 1px solid ${({ theme }) => theme.regularText};
     }
   }
 
-  .search-icon {
+  img {
     position: absolute;
     right: 18px;
     height: 24px;
     top: 50%;
     margin-top: -12px;
+    cursor: pointer;
   }
 `;
 
@@ -55,6 +56,8 @@ export const SearchResults = styled.div`
   z-index: -1;
   border-radius: 0 0 12px 12px;
   box-shadow: 0px 0px 12px rgba(20, 42, 91, 0.2);
+  transition: opacity 300ms, transform 300ms;
+  min-height: 130px;
 `;
 
 export const NoResults = styled.div`

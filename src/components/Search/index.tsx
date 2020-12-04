@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { CSSTransition } from "react-transition-group";
+
 import api from "../../services/api";
 import Loader from "../Loader";
-import WatchItem from "../WatchItem";
 import SearchItem from "../SearchItem";
 import { Container, SearchBox, SearchResults, NoResults } from "./styles";
 import searchIcon from "../../assets/search-icon.svg";
-import noResultsIcon from "../../assets/no-results.svg";
+import resetInputIcon from "../../assets/reset.svg";
+import searchErrorIcon from "../../assets/no-results.svg";
 
 interface SearchResult {
   id: number;
@@ -25,15 +27,12 @@ const Search = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [loadingResults, setLoadingResults] = useState(false);
-  const [noResults, setNoResults] = useState(false);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-  };
+  const [searchError, setSearchError] = useState("");
 
   useEffect(() => {
+    console.log(!!searchInput);
     setLoadingResults(true);
-    setNoResults(false);
+    setSearchError("");
 
     let timeout: any;
 
@@ -52,12 +51,16 @@ const Search = () => {
               .slice(0, 5);
 
             if (filteredResults.length === 0) {
-              setNoResults(true);
+              setSearchError("No results found.");
             }
 
             setLoadingResults(false);
 
             setSearchResults(filteredResults);
+          })
+          .catch(() => {
+            setLoadingResults(false);
+            setSearchError("Search error. Try again.");
           });
       }, 300);
     } else {
@@ -69,6 +72,17 @@ const Search = () => {
     };
   }, [searchInput]);
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleClearSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      setSearchInput("");
+      setSearchError("");
+    }
+  };
+
   return (
     <Container>
       <SearchBox>
@@ -76,39 +90,68 @@ const Search = () => {
           placeholder="Start typing a movie or show"
           value={searchInput}
           onChange={handleSearch}
+          onKeyDown={handleClearSearchInput}
         />
-        <img className="search-icon" src={searchIcon} alt="Search" />
+
+        <img
+          src={searchInput ? resetInputIcon : searchIcon}
+          onClick={() => {
+            if (searchInput) {
+              setSearchInput("");
+            }
+          }}
+          alt="Search"
+        />
       </SearchBox>
 
-      {searchInput && (
+      <CSSTransition
+        in={!!searchInput}
+        timeout={200}
+        classNames="fade-in-down"
+        unmountOnExit
+      >
         <SearchResults>
           {loadingResults ? (
             <Loader />
           ) : (
-            searchResults.map((result) => (
-              <SearchItem
-                key={result.id}
-                title={
-                  result.title ||
-                  result.name ||
-                  result.original_title ||
-                  result.original_name
-                }
-                poster_url={result.poster_path}
-                overview={result.overview}
-                release_date={result.release_date || result.first_air_date}
-                genre_ids={result.genre_ids}
-              />
-            ))
+            searchResults.map(
+              ({
+                id,
+                title,
+                name,
+                original_title,
+                original_name,
+                poster_path,
+                overview,
+                release_date,
+                first_air_date,
+                genre_ids,
+              }) => {
+                const availableTitle = title || name || original_title || original_name;
+
+                return (
+                  <SearchItem
+                    key={id}
+                    title={availableTitle}
+                    poster_url={poster_path}
+                    overview={overview}
+                    release_date={release_date || first_air_date}
+                    genre_ids={genre_ids}
+                  />
+                );
+              }
+            )
           )}
-          {noResults && (
+
+          {searchError && (
             <NoResults>
-              <img src={noResultsIcon} alt="No Results" />
-              <p>No results found.</p>
+              <img src={searchErrorIcon} alt="No Results" />
+
+              <p>{searchError}</p>
             </NoResults>
           )}
         </SearchResults>
-      )}
+      </CSSTransition>
     </Container>
   );
 };
