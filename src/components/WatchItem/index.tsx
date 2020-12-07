@@ -1,25 +1,38 @@
 import React from "react";
+import { format } from "date-fns";
 
 import Logo from "../Logo";
+import GlassesIcon from "../GlassesIcon";
 
-import { Item } from "./styles";
+import { Item, DummyPoster } from "./styles";
 
-import poster from "../../assets/_dummy/poster.jpg";
+interface Props {
+  title: string;
+  overview: string;
+  poster_url: string;
+  release_date: Date;
+  genres: string;
+}
 
-const WatchItem = () => {
+const WatchItem = ({ title, overview, poster_url, release_date, genres }: Props) => {
   return (
     <Item>
-      <img className="poster" src={poster} alt="Poster" />
+      {poster_url ? (
+        <img className="poster" src={poster_url} alt="Poster" />
+      ) : (
+        <DummyPoster>
+          <GlassesIcon size={50} />
+
+          <p>Poster Unavailabe</p>
+        </DummyPoster>
+      )}
       <div className="info">
-        <h3>Big Little Lies</h3>
-        <small>Drama 50 min</small>
+        <h3>{title}</h3>
+        <small>{genres}</small>
         <h4>Release Date</h4>
-        <p>December 20, 2020</p>
+        <p>{format(release_date, "MM/dd/yyyy")}</p>
         <h4>Sinopsis</h4>
-        <p>
-          The tale of three mothers of first graders whose apparently perfect lives
-          unravel to the point of murder.
-        </p>
+        <p>{overview}</p>
       </div>
       <Logo className="watched-btn" height={27} />
     </Item>

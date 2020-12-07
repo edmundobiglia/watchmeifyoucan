@@ -1,6 +1,6 @@
 import React from "react";
 
-import WatchItem from "../../components/WatchItem";
+import WatchList from "../../components/WatchList";
 import Search from "../../components/Search";
 
 import { Container } from "./styles";
@@ -9,11 +9,7 @@ const Dashboard = () => {
   return (
     <Container>
       <Search />
-      <WatchItem />
-      <WatchItem />
-      <WatchItem />
-      <WatchItem />
-      <WatchItem />
+      <WatchList />
     </Container>
   );
 };

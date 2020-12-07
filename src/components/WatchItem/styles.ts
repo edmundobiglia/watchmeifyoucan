@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { lighten } from "polished";
 
 export const Item = styled.div`
   display: flex;
@@ -63,5 +64,28 @@ export const Item = styled.div`
     position: absolute;
     top: 10px;
     right: 10px;
+  }
+`;
+
+export const DummyPoster = styled.div`
+  background-color: ${({ theme }) => lighten(0.6, theme.hightlightText)};
+  height: 270px;
+  width: 180px;
+  position: relative;
+  z-index: 20;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  transition: background-color 200ms linear;
+
+  p {
+    text-align: center;
+    color: ${({ theme }) => theme.foreground};
+    font-size: 15px;
+
+    transition: color 200ms linear;
   }
 `;

@@ -17,7 +17,7 @@ export default createGlobalStyle`
   }
 
   button, input {
-    font: 16px Roboto, sans-serif;
+    font: 16px Nunito, sans-serif;
     font-weight: 300;
   }
 

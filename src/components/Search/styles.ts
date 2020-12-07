@@ -22,13 +22,12 @@ export const SearchBox = styled.div`
     color: ${({ theme }) => theme.hightlightText};
     font-weight: 300;
     padding-right: 57px;
-    letter-spacing: 0.3px;
     border: 1px solid transparent;
 
     transition: border 200ms linear, background-color 200ms linear, color 200ms linear;
 
     &::placeholder {
-      color: ${({ theme }) => transparentize("0.6", theme.hightlightText)};
+      color: ${({ theme }) => transparentize("0.5", theme.hightlightText)};
       font-style: italic;
 
       transition: color 200ms linear;
@@ -66,8 +65,8 @@ export const SearchResults = styled.div`
   transition: opacity 300ms, transform 300ms, background-color 200ms linear;
 `;
 
-export const NoResults = styled.div`
-  color: ${({ theme }) => theme.regularText};
+export const SearchError = styled.div`
+  color: ${({ theme }) => theme.hightlightText};
   display: flex;
   justify-content: center;
   align-items: center;

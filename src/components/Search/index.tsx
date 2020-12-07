@@ -3,9 +3,10 @@ import { CSSTransition } from "react-transition-group";
 
 import Loader from "../Loader";
 import SearchItem from "../SearchItem";
-import { Container, SearchBox, SearchResults, NoResults } from "./styles";
+import { Container, SearchBox, SearchResults, SearchError } from "./styles";
+
 import searchIcon from "../../assets/search-icon.svg";
-import resetInputIcon from "../../assets/reset.svg";
+import clearSearchInput from "../../assets/reset.svg";
 import searchErrorIcon from "../../assets/no-results.svg";
 
 import useSearch from "../../hooks/useSearch";
@@ -14,7 +15,7 @@ const Search = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchError, setSearchError] = useState("");
 
-  const nodeRef = useRef(null);
+  const nodeRef = useRef(null); // For CSSTransition
 
   const { searchResults, loadingResults } = useSearch(searchInput, setSearchError);
 
@@ -33,14 +34,14 @@ const Search = () => {
     <Container>
       <SearchBox>
         <input
-          placeholder="Start typing a movie or show"
+          placeholder="Enter a movie or show"
           value={searchInput}
           onChange={handleSearch}
           onKeyDown={handleClearSearchInput}
         />
 
         <img
-          src={searchInput ? resetInputIcon : searchIcon}
+          src={searchInput ? clearSearchInput : searchIcon}
           onClick={() => {
             if (searchInput) {
               setSearchInput("");
@@ -73,17 +74,22 @@ const Search = () => {
                 release_date,
                 first_air_date,
                 genre_ids,
+                media_type,
               }) => {
                 const availableTitle = title || name || original_title || original_name;
+                const formattedReleaseDate = new Date(release_date || first_air_date);
 
                 return (
                   <SearchItem
                     key={id}
+                    id={id}
                     title={availableTitle}
                     poster_url={poster_path}
                     overview={overview}
-                    release_date={release_date || first_air_date}
+                    release_date={formattedReleaseDate}
                     genre_ids={genre_ids}
+                    media_type={media_type}
+                    setSearchInput={setSearchInput}
                   />
                 );
               }
@@ -91,11 +97,11 @@ const Search = () => {
           )}
 
           {searchError && (
-            <NoResults>
+            <SearchError>
               <img src={searchErrorIcon} alt="No Results" />
 
               <p>{searchError}</p>
-            </NoResults>
+            </SearchError>
           )}
         </SearchResults>
       </CSSTransition>

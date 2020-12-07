@@ -10,8 +10,8 @@ interface SearchResult {
   overview: string;
   poster_path: string;
   release_date: string;
-  media_type: string;
   first_air_date: string;
+  media_type: string;
   genre_ids: number[];
 }
 
@@ -26,7 +26,7 @@ const useSearch = (
     setLoadingResults(true);
     setSearchError("");
 
-    let timeout: any;
+    let timeout: ReturnType<typeof setTimeout>;
 
     if (searchInput) {
       timeout = setTimeout(() => {
@@ -38,7 +38,9 @@ const useSearch = (
             }
           )
           .then((response) => {
-            const filteredResults = response.data.results
+            const searchResults = response.data.results;
+
+            const filteredResults = searchResults
               .filter((result: SearchResult) => result.media_type !== "person")
               .slice(0, 5);
 
@@ -52,6 +54,7 @@ const useSearch = (
           })
           .catch(() => {
             setLoadingResults(false);
+
             setSearchError("Search error. Try again.");
           });
       }, 300);
