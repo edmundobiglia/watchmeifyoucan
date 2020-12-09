@@ -8,17 +8,17 @@ import { Item, DummyPoster } from "./styles";
 
 interface Props {
   title: string;
-  overview: string;
-  poster_url: string;
-  release_date: Date;
+  sinopsis: string;
+  posterUrl: string;
+  releaseDate: Date;
   genres: string;
 }
 
-const WatchItem = ({ title, overview, poster_url, release_date, genres }: Props) => {
+const WatchItem = ({ title, sinopsis, posterUrl, releaseDate, genres }: Props) => {
   return (
     <Item>
-      {poster_url ? (
-        <img className="poster" src={poster_url} alt="Poster" />
+      {posterUrl ? (
+        <img className="poster" src={posterUrl} alt="Poster" />
       ) : (
         <DummyPoster>
           <GlassesIcon size={50} />
@@ -30,9 +30,9 @@ const WatchItem = ({ title, overview, poster_url, release_date, genres }: Props)
         <h3>{title}</h3>
         <small>{genres}</small>
         <h4>Release Date</h4>
-        <p>{format(release_date, "MM/dd/yyyy")}</p>
+        <p>{format(releaseDate, "MM/dd/yyyy")}</p>
         <h4>Sinopsis</h4>
-        <p>{overview}</p>
+        <p>{sinopsis}</p>
       </div>
       <Logo className="watched-btn" height={27} />
     </Item>

@@ -1,18 +1,15 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import formatSearchResults from "../utils/formatSearchResults";
 
 interface SearchResult {
   id: number;
   title: string;
-  name: string;
-  original_title: string;
-  original_name: string;
-  overview: string;
-  poster_path: string;
-  release_date: string;
-  first_air_date: string;
-  media_type: string;
-  genre_ids: number[];
+  sinopsis: string;
+  posterUrl: string;
+  releaseDate: Date;
+  mediaType: string;
+  genres: string;
 }
 
 const useSearch = (
@@ -38,10 +35,10 @@ const useSearch = (
             }
           )
           .then((response) => {
-            const searchResults = response.data.results;
+            const searchResults = formatSearchResults(response.data.results);
 
             const filteredResults = searchResults
-              .filter((result: SearchResult) => result.media_type !== "person")
+              .filter((result: SearchResult) => result.mediaType !== "person")
               .slice(0, 5);
 
             if (filteredResults.length === 0) {

@@ -29,17 +29,24 @@ const formatSearchResult = (searchResults: SearchResult[]) => {
       media_type,
       genre_ids,
     }) => {
-      const posterUrlWithSlash = poster_path ? poster_path.replace(/^\/+/g, "") : "";
-      const posterUrl = `https://image.tmdb.org/t/p/w154/${posterUrlWithSlash}`;
+      const availableTitle = title || original_title || name || original_name;
+
+      const posterUrlWithSlash = poster_path && poster_path.replace(/^\/+/g, "");
+      const posterUrl = poster_path
+        ? `https://image.tmdb.org/t/p/w154/${posterUrlWithSlash}`
+        : "";
+
+      const releaseDate = new Date(release_date || first_air_date);
+
       const genreList = genre_ids && getGenres(genre_ids);
       const genres = genreList.join(", ");
 
       const formattedSearchResult = {
         id,
-        title: title || original_title || name || original_name,
+        title: availableTitle,
         sinopsis: overview,
         posterUrl,
-        releaseDate: new Date(release_date || first_air_date),
+        releaseDate,
         mediaType: media_type,
         genres,
       };

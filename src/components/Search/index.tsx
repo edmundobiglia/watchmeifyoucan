@@ -63,32 +63,17 @@ const Search = () => {
             <Loader />
           ) : (
             searchResults.map(
-              ({
-                id,
-                title,
-                name,
-                original_title,
-                original_name,
-                poster_path,
-                overview,
-                release_date,
-                first_air_date,
-                genre_ids,
-                media_type,
-              }) => {
-                const availableTitle = title || name || original_title || original_name;
-                const formattedReleaseDate = new Date(release_date || first_air_date);
-
+              ({ id, title, sinopsis, posterUrl, releaseDate, mediaType, genres }) => {
                 return (
                   <SearchItem
                     key={id}
                     id={id}
-                    title={availableTitle}
-                    poster_url={poster_path}
-                    overview={overview}
-                    release_date={formattedReleaseDate}
-                    genre_ids={genre_ids}
-                    media_type={media_type}
+                    title={title}
+                    posterUrl={posterUrl}
+                    sinopsis={sinopsis}
+                    releaseDate={releaseDate}
+                    genres={genres}
+                    mediaType={mediaType}
                     setSearchInput={setSearchInput}
                   />
                 );

@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { getUnixTime } from "date-fns";
 
 import { WatchListContext } from "../../contexts/WatchListProvider";
 
@@ -11,41 +10,41 @@ import tvIcon from "../../assets/tv.svg";
 import sortIcon from "../../assets/sort.svg";
 
 interface WatchListItem {
-  id: string;
+  id: number;
   title: string;
-  overview: string;
-  poster_url: string;
-  release_date: Date;
-  added_date: number;
-  media_type: string;
+  sinopsis: string;
+  posterUrl: string;
+  releaseDate: Date;
+  addedDate: number;
+  mediaType: string;
   genres: string;
 }
 
 const WatchList = () => {
-  const { state } = useContext(WatchListContext);
-  const [watchList, setWatchList] = useState<WatchListItem[]>([]);
+  const { state, dispatch } = useContext(WatchListContext);
+  const [watchList, setWatchList] = useState<WatchListItem[]>(state);
   const [filter, setFilter] = useState("");
-  const [sort, setSort] = useState(false);
+  const [sortByReleaseDate, setSortByReleaseDate] = useState(false);
 
   useEffect(() => {
     if (filter) {
-      setWatchList(state.filter((watchItem) => watchItem.media_type === filter));
+      const filteredWatchList = state.filter(
+        (watchItem) => watchItem.mediaType === filter
+      );
+      setWatchList(filteredWatchList);
     } else {
       setWatchList(state);
     }
+  }, [state, filter, sortByReleaseDate]);
 
-    if (sort) {
-      setWatchList((previousWatchList) =>
-        previousWatchList.sort(
-          (a, b) => getUnixTime(a.release_date) - getUnixTime(b.release_date)
-        )
-      );
-    } else {
-      setWatchList((previousWatchList) =>
-        previousWatchList.sort((a, b) => (a.added_date > b.added_date ? -1 : 1))
-      );
-    }
-  }, [state, filter, sort]);
+  const handleSort = () => {
+    dispatch({
+      type: "SORT",
+      sortByRelease: !sortByReleaseDate,
+    });
+
+    setSortByReleaseDate(!sortByReleaseDate);
+  };
 
   return (
     <>
@@ -80,18 +79,18 @@ const WatchList = () => {
               Movies
             </button>
 
-            <button className="sort" onClick={() => setSort(!sort)}>
+            <button className="sort" onClick={handleSort}>
               <img src={sortIcon} alt="Sort" />
             </button>
           </FilterContainer>
 
-          {watchList.map(({ id, title, overview, poster_url, release_date, genres }) => (
+          {watchList.map(({ id, title, sinopsis, posterUrl, releaseDate, genres }) => (
             <WatchItem
               key={id}
               title={title}
-              overview={overview}
-              poster_url={poster_url}
-              release_date={release_date}
+              sinopsis={sinopsis}
+              posterUrl={posterUrl}
+              releaseDate={releaseDate}
               genres={genres}
             />
           ))}

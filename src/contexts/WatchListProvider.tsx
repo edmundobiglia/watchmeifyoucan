@@ -1,11 +1,18 @@
 import React, { createContext, useReducer, useMemo } from "react";
+import { getUnixTime } from "date-fns";
 
 const reducer = (state: WatchItem[], action: WatchListActions) => {
   switch (action.type) {
     case "ADD_TO_WATCHLIST":
-      return [...state, action.watchItem];
-    case "FILTER":
-      return state.filter((watchItem) => watchItem.media_type === action.mediaType);
+      return [action.watchItem, ...state];
+    case "SORT":
+      if (action.sortByRelease) {
+        return state.sort((a, b) =>
+          getUnixTime(a.releaseDate) < getUnixTime(b.releaseDate) ? -1 : 1
+        );
+      } else {
+        return state.sort((a, b) => (a.addedDate > b.addedDate ? -1 : 1));
+      }
     default:
       return state;
   }
@@ -22,30 +29,30 @@ export const WatchListContext = createContext<{
 }>(initialState);
 
 interface WatchItem {
-  id: string;
+  id: number;
   title: string;
-  overview: string;
-  poster_url: string;
-  release_date: Date;
-  added_date: number;
-  media_type: string;
+  sinopsis: string;
+  posterUrl: string;
+  releaseDate: Date;
+  addedDate: number;
+  mediaType: string;
   genres: string;
 }
 
 const ADD_TO_WATCHLIST = "ADD_TO_WATCHLIST";
-const FILTER = "FILTER";
+const SORT = "SORT";
 
 interface AddToWatchListAction {
   type: typeof ADD_TO_WATCHLIST;
   watchItem: WatchItem;
 }
 
-interface FilterAction {
-  type: typeof FILTER;
-  mediaType: string;
+interface SortAction {
+  type: typeof SORT;
+  sortByRelease: boolean;
 }
 
-type WatchListActions = AddToWatchListAction | FilterAction;
+type WatchListActions = AddToWatchListAction | SortAction;
 
 interface Props {
   children: React.ReactNode;
