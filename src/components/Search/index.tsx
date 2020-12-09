@@ -63,14 +63,14 @@ const Search = () => {
             <Loader />
           ) : (
             searchResults.map(
-              ({ id, title, sinopsis, posterUrl, releaseDate, mediaType, genres }) => {
+              ({ id, title, synopsis, posterUrl, releaseDate, mediaType, genres }) => {
                 return (
                   <SearchItem
                     key={id}
                     id={id}
                     title={title}
                     posterUrl={posterUrl}
-                    sinopsis={sinopsis}
+                    synopsis={synopsis}
                     releaseDate={releaseDate}
                     genres={genres}
                     mediaType={mediaType}

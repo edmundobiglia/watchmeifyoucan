@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
 import TextTruncate from "react-text-truncate";
 
+import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
+import { addAction } from "../../contexts/watchlist/actions/watchListActions";
+
 import Logo from "../Logo";
 import GlassesIcon from "../GlassesIcon";
 
 import { Item, DummyPoster } from "./styles";
 
-import { WatchListContext } from "../../contexts/WatchListProvider";
-
 interface Props {
   id: number;
   title: string;
-  sinopsis: string;
+  synopsis: string;
   posterUrl: string;
   releaseDate: Date;
   mediaType: string;
@@ -22,7 +23,7 @@ interface Props {
 const SearchItem = ({
   id,
   title,
-  sinopsis,
+  synopsis,
   posterUrl,
   releaseDate,
   mediaType,
@@ -35,19 +36,20 @@ const SearchItem = ({
 
   const handleAddToWatchList = () => {
     // isso aqui vai ser no THEN do método para adicionar no banco de dados
-    dispatch({
-      type: "ADD_TO_WATCHLIST",
-      watchItem: {
-        id,
-        title,
-        sinopsis,
-        posterUrl,
-        releaseDate,
-        addedDate: Date.now(),
-        genres,
-        mediaType,
-      },
-    });
+
+    const watchItem = {
+      id,
+      title,
+      synopsis,
+      posterUrl,
+      releaseDate,
+      addedDate: new Date(),
+      mediaType,
+      genres,
+      isWatched: false,
+    };
+
+    dispatch(addAction(watchItem));
 
     // then
     setSearchInput("");
@@ -71,13 +73,13 @@ const SearchItem = ({
           {releaseYear} {genres && ` - ${genres}`}
         </small>
 
-        <h4>Sinopsis</h4>
+        <h4>Synopsis</h4>
 
         <TextTruncate
           line={3}
           element="p"
           truncateText="…"
-          text={sinopsis ? sinopsis : "Not Available"}
+          text={synopsis ? synopsis : "Not Available"}
         />
       </div>
 

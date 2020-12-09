@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useContext } from "react";
 import { format } from "date-fns";
+
+import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
+
+import { RemoveFromWatchlistAction } from "../../contexts/watchlist/actions/watchListActions";
 
 import Logo from "../Logo";
 import GlassesIcon from "../GlassesIcon";
 
+import trashIcon from "../../assets/trash.svg";
+
 import { Item, DummyPoster } from "./styles";
 
 interface Props {
+  id: number;
   title: string;
-  sinopsis: string;
+  synopsis: string;
   posterUrl: string;
   releaseDate: Date;
   genres: string;
+  isWatched: boolean;
 }
 
-const WatchItem = ({ title, sinopsis, posterUrl, releaseDate, genres }: Props) => {
+const WatchItem = ({
+  id,
+  title,
+  synopsis,
+  posterUrl,
+  releaseDate,
+  genres,
+  isWatched,
+}: Props) => {
+  const { dispatch } = useContext(WatchListContext);
+
+  const handleRemoveFromWatchlist = () => {
+    dispatch(RemoveFromWatchlistAction(id));
+  };
+
   return (
     <Item>
       {posterUrl ? (
@@ -31,10 +53,19 @@ const WatchItem = ({ title, sinopsis, posterUrl, releaseDate, genres }: Props) =
         <small>{genres}</small>
         <h4>Release Date</h4>
         <p>{format(releaseDate, "MM/dd/yyyy")}</p>
-        <h4>Sinopsis</h4>
-        <p>{sinopsis}</p>
+        <h4>Synopsis</h4>
+        <p>{synopsis}</p>
       </div>
-      <Logo className="watched-btn" height={27} />
+
+      <div className="actions">
+        <button>
+          <Logo className="watched-btn" height={24} />
+        </button>
+
+        <button onClick={handleRemoveFromWatchlist}>
+          <img src={trashIcon} alt="Remove" />
+        </button>
+      </div>
     </Item>
   );
 };

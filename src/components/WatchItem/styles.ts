@@ -60,10 +60,22 @@ export const Item = styled.div`
     }
   }
 
-  .watched-btn {
+  .actions {
     position: absolute;
     top: 10px;
     right: 10px;
+    display: flex;
+    align-items: center;
+
+    button {
+      background: none;
+      border: 0;
+    }
+
+    img {
+      margin-left: 12px;
+      height: 24px;
+    }
   }
 `;
 

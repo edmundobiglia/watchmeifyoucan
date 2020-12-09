@@ -21,14 +21,19 @@ const genreTable: [number, string][] = [
 ];
 
 const getGenres = (genreCodes: number[]) => {
-  const genres = genreTable.reduce((previousGenres: string[], [genreCode, genreName]) => {
-    if (genreCodes.includes(genreCode)) {
-      previousGenres.push(genreName);
+  const genreList = genreTable.reduce(
+    (previousGenres: string[], [genreCode, genreName]) => {
+      if (genreCodes.includes(genreCode)) {
+        previousGenres.push(genreName);
 
+        return previousGenres;
+      }
       return previousGenres;
-    }
-    return previousGenres;
-  }, []);
+    },
+    []
+  );
+
+  const genres = genreList.join(", ");
 
   return genres;
 };

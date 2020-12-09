@@ -38,13 +38,12 @@ const formatSearchResult = (searchResults: SearchResult[]) => {
 
       const releaseDate = new Date(release_date || first_air_date);
 
-      const genreList = genre_ids && getGenres(genre_ids);
-      const genres = genreList.join(", ");
+      const genres = genre_ids && getGenres(genre_ids);
 
       const formattedSearchResult = {
         id,
         title: availableTitle,
-        sinopsis: overview,
+        synopsis: overview,
         posterUrl,
         releaseDate,
         mediaType: media_type,

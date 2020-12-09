@@ -5,7 +5,7 @@ import formatSearchResults from "../utils/formatSearchResults";
 interface SearchResult {
   id: number;
   title: string;
-  sinopsis: string;
+  synopsis: string;
   posterUrl: string;
   releaseDate: Date;
   mediaType: string;

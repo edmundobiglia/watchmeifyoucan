@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
-import { WatchListContext } from "../../contexts/WatchListProvider";
+import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
+import { sortByReleaseDateAction } from "../../contexts/watchlist/actions/watchListActions";
 
 import WatchItem from "../WatchItem";
 
@@ -12,16 +13,18 @@ import sortIcon from "../../assets/sort.svg";
 interface WatchListItem {
   id: number;
   title: string;
-  sinopsis: string;
+  synopsis: string;
   posterUrl: string;
   releaseDate: Date;
-  addedDate: number;
+  addedDate: Date;
   mediaType: string;
   genres: string;
+  isWatched: boolean;
 }
 
 const WatchList = () => {
   const { state, dispatch } = useContext(WatchListContext);
+
   const [watchList, setWatchList] = useState<WatchListItem[]>(state);
   const [filter, setFilter] = useState("");
   const [sortByReleaseDate, setSortByReleaseDate] = useState(false);
@@ -31,6 +34,7 @@ const WatchList = () => {
       const filteredWatchList = state.filter(
         (watchItem) => watchItem.mediaType === filter
       );
+
       setWatchList(filteredWatchList);
     } else {
       setWatchList(state);
@@ -38,10 +42,7 @@ const WatchList = () => {
   }, [state, filter, sortByReleaseDate]);
 
   const handleSort = () => {
-    dispatch({
-      type: "SORT",
-      sortByRelease: !sortByReleaseDate,
-    });
+    dispatch(sortByReleaseDateAction(!sortByReleaseDate));
 
     setSortByReleaseDate(!sortByReleaseDate);
   };
@@ -84,16 +85,20 @@ const WatchList = () => {
             </button>
           </FilterContainer>
 
-          {watchList.map(({ id, title, sinopsis, posterUrl, releaseDate, genres }) => (
-            <WatchItem
-              key={id}
-              title={title}
-              sinopsis={sinopsis}
-              posterUrl={posterUrl}
-              releaseDate={releaseDate}
-              genres={genres}
-            />
-          ))}
+          {watchList.map(
+            ({ id, title, synopsis, posterUrl, releaseDate, genres, isWatched }) => (
+              <WatchItem
+                key={id}
+                id={id}
+                title={title}
+                synopsis={synopsis}
+                posterUrl={posterUrl}
+                releaseDate={releaseDate}
+                genres={genres}
+                isWatched={isWatched}
+              />
+            )
+          )}
         </>
       )}
     </>
