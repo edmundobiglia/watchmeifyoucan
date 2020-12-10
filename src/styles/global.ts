@@ -25,7 +25,7 @@ export default createGlobalStyle`
     cursor: pointer;
   }
 
-  /* Mount animations */
+  /* Mounting animations */
 
   .fade-in-down-enter {
     opacity: 0;
@@ -47,5 +47,9 @@ export default createGlobalStyle`
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 200ms, transform 200ms;
+  }
+
+  span, p, h1, h2, h3, h4, div {
+    transition: color 200ms linear;
   }
 `;

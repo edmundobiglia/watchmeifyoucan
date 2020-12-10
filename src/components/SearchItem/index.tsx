@@ -41,7 +41,7 @@ const SearchItem = ({
 
   const releaseYear = releaseDate.getFullYear();
 
-  const handleAddToWatchList = async (): Promise<void> => {
+  const handleAddToWatchList = async () => {
     setError("");
 
     try {

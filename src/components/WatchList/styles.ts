@@ -14,8 +14,6 @@ export const NoWatchList = styled.div`
   p {
     color: ${({ theme }) => theme.regularText};
     font-size: 16px;
-
-    transition: color 200ms linear;
   }
 `;
 
@@ -32,8 +30,6 @@ export const FilterContainer = styled.div`
     padding: 3px 6px 3px 11px;
     border-radius: 3px;
     font-size: 16px;
-
-    transition: color 200ms linear;
 
     &:not(:last-of-type) {
       margin-left: 15px;
@@ -60,8 +56,6 @@ export const FilterContainer = styled.div`
 
         transition: background 200ms linear;
       }
-
-      transition: color 200ms linear;
     }
   }
 

@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+import convertSnakeToCamelCase from "../../utils/convertSnakeToCamelCase";
+
 import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
 import {
   setWatchListAction,
@@ -8,6 +10,7 @@ import {
 } from "../../contexts/watchlist/actions/watchListActions";
 
 import WatchItem from "../WatchItem";
+import Loader from "../Loader";
 
 import { NoWatchList, FilterContainer } from "./styles";
 
@@ -27,18 +30,38 @@ interface WatchListItem {
   isWatched: boolean;
 }
 
+interface WatchListItemDTO {
+  id: string;
+  tmdb_id: number;
+  title: string;
+  synopsis: string;
+  poster_url: string;
+  release_date: Date;
+  added_date: Date;
+  media_type: string;
+  genres: string;
+  is_watched: boolean;
+}
+
 const WatchList = () => {
   const { state, dispatch } = useContext(WatchListContext);
 
+  const [loading, setLoading] = useState(true);
   const [watchList, setWatchList] = useState<WatchListItem[]>(state);
   const [filter, setFilter] = useState("");
   const [sortByReleaseDate, setSortByReleaseDate] = useState(false);
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:3333/watchlist").then((response) => {
-  //     dispatch(setWatchListAction(response.data));
-  //   });
-  // }, []);
+  useEffect(() => {
+    axios.get("http://localhost:3333/watchlist").then((response) => {
+      const formattedWatchList = response.data.map((watchListItem: WatchListItemDTO) =>
+        convertSnakeToCamelCase(watchListItem)
+      );
+
+      dispatch(setWatchListAction(formattedWatchList));
+
+      setLoading(false);
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     if (state.length === 0) return;
@@ -60,6 +83,9 @@ const WatchList = () => {
     setSortByReleaseDate(!sortByReleaseDate);
   };
 
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <>
       {state.length === 0 ? (

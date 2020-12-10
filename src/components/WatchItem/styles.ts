@@ -31,8 +31,6 @@ export const Item = styled.div`
       font-size: 21px;
       font-weight: 600;
       color: ${({ theme }) => theme.hightlightText};
-
-      transition: color 200ms linear;
     }
 
     h4 {
@@ -40,23 +38,17 @@ export const Item = styled.div`
       font-weight: 600;
       color: ${({ theme }) => theme.hightlightText};
       margin: 15px 0 3px 0;
-
-      transition: color 200ms linear;
     }
 
     p {
       font-size: 16px;
       color: ${({ theme }) => theme.regularText};
       line-height: 1.5;
-
-      transition: color 200ms linear;
     }
 
     small {
       color: ${({ theme }) => theme.regularText};
       font-size: 15px;
-
-      transition: color 200ms linear;
     }
   }
 
@@ -74,7 +66,7 @@ export const Item = styled.div`
 
     img {
       margin-left: 12px;
-      height: 18px;
+      height: 24px;
     }
   }
 `;
@@ -97,7 +89,5 @@ export const DummyPoster = styled.div`
     text-align: center;
     color: ${({ theme }) => theme.foreground};
     font-size: 15px;
-
-    transition: color 200ms linear;
   }
 `;

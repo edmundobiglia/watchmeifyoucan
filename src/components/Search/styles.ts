@@ -29,8 +29,6 @@ export const SearchBox = styled.div`
     &::placeholder {
       color: ${({ theme }) => transparentize("0.5", theme.hightlightText)};
       font-style: italic;
-
-      transition: color 200ms linear;
     }
 
     &:focus {
@@ -71,8 +69,6 @@ export const SearchError = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
-  transition: color 200ms linear;
 
   img {
     width: 27px;
