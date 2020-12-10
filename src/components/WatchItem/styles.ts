@@ -74,7 +74,7 @@ export const Item = styled.div`
 
     img {
       margin-left: 12px;
-      height: 24px;
+      height: 18px;
     }
   }
 `;

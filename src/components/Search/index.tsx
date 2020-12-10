@@ -63,11 +63,19 @@ const Search = () => {
             <Loader />
           ) : (
             searchResults.map(
-              ({ id, title, synopsis, posterUrl, releaseDate, mediaType, genres }) => {
+              ({
+                tmdbId,
+                title,
+                synopsis,
+                posterUrl,
+                releaseDate,
+                mediaType,
+                genres,
+              }) => {
                 return (
                   <SearchItem
-                    key={id}
-                    id={id}
+                    key={tmdbId}
+                    tmdbId={tmdbId}
                     title={title}
                     posterUrl={posterUrl}
                     synopsis={synopsis}

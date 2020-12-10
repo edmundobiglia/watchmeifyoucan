@@ -1,7 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
-import { sortByReleaseDateAction } from "../../contexts/watchlist/actions/watchListActions";
+import {
+  setWatchListAction,
+  sortByReleaseDateAction,
+} from "../../contexts/watchlist/actions/watchListActions";
 
 import WatchItem from "../WatchItem";
 
@@ -11,7 +15,8 @@ import tvIcon from "../../assets/tv.svg";
 import sortIcon from "../../assets/sort.svg";
 
 interface WatchListItem {
-  id: number;
+  id: string;
+  tmdbId: number;
   title: string;
   synopsis: string;
   posterUrl: string;
@@ -29,7 +34,15 @@ const WatchList = () => {
   const [filter, setFilter] = useState("");
   const [sortByReleaseDate, setSortByReleaseDate] = useState(false);
 
+  // useEffect(() => {
+  //   axios.get("http://localhost:3333/watchlist").then((response) => {
+  //     dispatch(setWatchListAction(response.data));
+  //   });
+  // }, []);
+
   useEffect(() => {
+    if (state.length === 0) return;
+
     if (filter) {
       const filteredWatchList = state.filter(
         (watchItem) => watchItem.mediaType === filter
@@ -86,10 +99,20 @@ const WatchList = () => {
           </FilterContainer>
 
           {watchList.map(
-            ({ id, title, synopsis, posterUrl, releaseDate, genres, isWatched }) => (
+            ({
+              id,
+              tmdbId,
+              title,
+              synopsis,
+              posterUrl,
+              releaseDate,
+              genres,
+              isWatched,
+            }) => (
               <WatchItem
                 key={id}
                 id={id}
+                tmdbId={tmdbId}
                 title={title}
                 synopsis={synopsis}
                 posterUrl={posterUrl}

@@ -1,9 +1,15 @@
 import { isBefore, isAfter } from "date-fns";
 
+const SET_WATCHLIST = "SET_WATCHLIST";
 const ADD_TO_WATCHLIST = "ADD_TO_WATCHLIST";
 const SORT_BY_RELEASE_DATE = "SORT_BY_RELEASE_DATE";
 const SET_AS_WATCHED = "SET_AS_WATCHED";
 const REMOVE_FROM_WATCHLIST = "REMOVE_FROM_WATCHLIST";
+
+interface SetWatchListAction {
+  type: typeof SET_WATCHLIST;
+  watchList: WatchItem[];
+}
 
 interface AddToWatchListAction {
   type: typeof ADD_TO_WATCHLIST;
@@ -17,22 +23,24 @@ interface SortByReleaseDateAction {
 
 interface SetAsWatchedAction {
   type: typeof SET_AS_WATCHED;
-  id: number;
+  id: string;
 }
 
 interface RemoveFromWatchListAction {
   type: typeof REMOVE_FROM_WATCHLIST;
-  id: number;
+  id: string;
 }
 
 type WatchListActions =
+  | SetWatchListAction
   | AddToWatchListAction
   | SortByReleaseDateAction
   | RemoveFromWatchListAction
   | SetAsWatchedAction;
 
 export interface WatchItem {
-  id: number;
+  id: string;
+  tmdbId: number;
   title: string;
   synopsis: string;
   posterUrl: string;
@@ -45,6 +53,9 @@ export interface WatchItem {
 
 const watchListReducer = (state: WatchItem[], action: WatchListActions) => {
   switch (action.type) {
+    case "SET_WATCHLIST":
+      return action.watchList;
+
     case "ADD_TO_WATCHLIST":
       return [action.watchItem, ...state];
 

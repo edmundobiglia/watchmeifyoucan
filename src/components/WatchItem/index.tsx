@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import axios from "axios";
 import { format } from "date-fns";
 
 import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
@@ -13,7 +14,8 @@ import trashIcon from "../../assets/trash.svg";
 import { Item, DummyPoster } from "./styles";
 
 interface Props {
-  id: number;
+  id: string;
+  tmdbId: number;
   title: string;
   synopsis: string;
   posterUrl: string;
@@ -24,6 +26,7 @@ interface Props {
 
 const WatchItem = ({
   id,
+  tmdbId,
   title,
   synopsis,
   posterUrl,
@@ -33,8 +36,14 @@ const WatchItem = ({
 }: Props) => {
   const { dispatch } = useContext(WatchListContext);
 
-  const handleRemoveFromWatchlist = () => {
-    dispatch(RemoveFromWatchlistAction(id));
+  const handleRemoveFromWatchlist = async () => {
+    try {
+      await axios.delete(`http://localhost:3333/watchlist/${id}`);
+
+      dispatch(RemoveFromWatchlistAction(id));
+    } catch (err) {
+      console.log("error, item not removed");
+    }
   };
 
   return (
@@ -59,7 +68,7 @@ const WatchItem = ({
 
       <div className="actions">
         <button>
-          <Logo className="watched-btn" height={24} />
+          <Logo className="watched-btn" height={18} />
         </button>
 
         <button onClick={handleRemoveFromWatchlist}>

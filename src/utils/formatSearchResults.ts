@@ -41,7 +41,7 @@ const formatSearchResult = (searchResults: SearchResult[]) => {
       const genres = genre_ids && getGenres(genre_ids);
 
       const formattedSearchResult = {
-        id,
+        tmdbId: id,
         title: availableTitle,
         synopsis: overview,
         posterUrl,

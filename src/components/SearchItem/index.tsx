@@ -1,16 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import TextTruncate from "react-text-truncate";
+import axios from "axios";
 
 import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
-import { addAction } from "../../contexts/watchlist/actions/watchListActions";
+import { addToWatchListAction } from "../../contexts/watchlist/actions/watchListActions";
+
+import convertSnakeToCamelCase from "../../utils/convertSnakeToCamelCase";
 
 import Logo from "../Logo";
 import GlassesIcon from "../GlassesIcon";
 
-import { Item, DummyPoster } from "./styles";
+import errorIcon from "../../assets/error.svg";
+
+import { Item, DummyPoster, SearchError } from "./styles";
 
 interface Props {
-  id: number;
+  tmdbId: number;
   title: string;
   synopsis: string;
   posterUrl: string;
@@ -21,7 +26,7 @@ interface Props {
 }
 
 const SearchItem = ({
-  id,
+  tmdbId,
   title,
   synopsis,
   posterUrl,
@@ -32,27 +37,33 @@ const SearchItem = ({
 }: Props) => {
   const { dispatch } = useContext(WatchListContext);
 
+  const [error, setError] = useState("");
+
   const releaseYear = releaseDate.getFullYear();
 
-  const handleAddToWatchList = () => {
-    // isso aqui vai ser no THEN do método para adicionar no banco de dados
+  const handleAddToWatchList = async (): Promise<void> => {
+    setError("");
 
-    const watchItem = {
-      id,
-      title,
-      synopsis,
-      posterUrl,
-      releaseDate,
-      addedDate: new Date(),
-      mediaType,
-      genres,
-      isWatched: false,
-    };
+    try {
+      const response = await axios.post("http://localhost:3333/watchlist", {
+        tmdb_id: tmdbId,
+        title,
+        synopsis,
+        poster_url: posterUrl,
+        release_date: releaseDate,
+        media_type: mediaType,
+        genres,
+        is_watched: false,
+      });
 
-    dispatch(addAction(watchItem));
+      const watchItem = convertSnakeToCamelCase(response.data);
 
-    // then
-    setSearchInput("");
+      dispatch(addToWatchListAction(watchItem));
+
+      setSearchInput("");
+    } catch (err) {
+      setError(err.response.data.error);
+    }
   };
 
   return (
@@ -67,6 +78,14 @@ const SearchItem = ({
         </DummyPoster>
       )}
       <div className="info">
+        {error && (
+          <SearchError className="error">
+            <img src={errorIcon} alt="Error" />
+
+            <span>{error}</span>
+          </SearchError>
+        )}
+
         <h3>{title}</h3>
 
         <small>

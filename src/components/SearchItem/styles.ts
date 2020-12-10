@@ -92,3 +92,20 @@ export const DummyPoster = styled.div`
     transition: color 200ms linear;
   }
 `;
+
+export const SearchError = styled.div`
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+
+  span {
+    color: #de385d;
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  img {
+    width: 16px;
+    margin-right: 6px;
+  }
+`;

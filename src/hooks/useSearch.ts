@@ -3,7 +3,7 @@ import api from "../services/api";
 import formatSearchResults from "../utils/formatSearchResults";
 
 interface SearchResult {
-  id: number;
+  tmdbId: number;
   title: string;
   synopsis: string;
   posterUrl: string;
