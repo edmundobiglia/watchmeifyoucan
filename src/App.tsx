@@ -1,27 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
+import { DarkModeContext } from "./contexts/darkMode/DarkModeProvider";
 import { ThemeProvider } from "styled-components";
+
+import Routes from "./routes/";
 
 import GlobalStyle from "./styles/global";
 import { light, dark } from "./themes/theme";
 
-import Header from "./components/Header";
-import Dashboard from "./pages/Dashboard";
-
 function App() {
-  const savedDarkModeState =
-    JSON.parse(`${localStorage.getItem("watchmeifyoucan:dark-mode")}`) || false;
-
-  const [darkMode, setDarkMode] = useState<boolean>(savedDarkModeState);
-
-  useEffect(() => {
-    localStorage.setItem("watchmeifyoucan:dark-mode", JSON.stringify(darkMode));
-  }, [darkMode]);
+  const { state: darkModeOn } = useContext(DarkModeContext);
 
   return (
-    <ThemeProvider theme={darkMode ? dark : light}>
+    <ThemeProvider theme={darkModeOn ? dark : light}>
       <GlobalStyle />
-      <Header darkMode={darkMode} setDarkMode={setDarkMode} />
-      <Dashboard />
+      <Routes />
     </ThemeProvider>
   );
 }

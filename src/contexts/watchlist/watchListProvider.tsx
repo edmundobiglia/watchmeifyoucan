@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useMemo } from "react";
-import watchListReducer, { WatchItem } from "./reducer/watchListReducer";
+import watchListReducer, { WatchItem } from "./watchListReducer";
 
 const initialState = {
   state: [],

@@ -1,4 +1,4 @@
-import { WatchItem } from "../reducer/watchListReducer";
+import { WatchItem } from "./watchListReducer";
 
 export const setWatchListAction = (watchList: WatchItem[]) => ({
   type: "SET_WATCHLIST",

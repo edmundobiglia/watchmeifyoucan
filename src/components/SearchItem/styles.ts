@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { lighten } from "polished";
 
+import { colors } from "../../themes/theme";
+
 export const Item = styled.div`
   display: flex;
   position: relative;
@@ -89,7 +91,7 @@ export const SearchError = styled.div`
   align-items: center;
 
   span {
-    color: #de385d;
+    color: ${colors.red};
     font-size: 13px;
     font-style: italic;
   }

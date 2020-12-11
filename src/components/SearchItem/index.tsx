@@ -2,8 +2,8 @@ import React, { useContext, useState } from "react";
 import TextTruncate from "react-text-truncate";
 import axios from "axios";
 
-import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
-import { addToWatchListAction } from "../../contexts/watchlist/actions/watchListActions";
+import { WatchListContext } from "../../contexts/watchlist/watchListProvider";
+import { addToWatchListAction } from "../../contexts/watchlist/watchListActions";
 
 import convertSnakeToCamelCase from "../../utils/convertSnakeToCamelCase";
 

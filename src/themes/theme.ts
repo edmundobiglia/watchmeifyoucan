@@ -3,6 +3,7 @@ import { DefaultTheme } from "styled-components";
 export const colors = {
   purple: "#5d71ff",
   blue: "#16eaef",
+  red: "#de385d",
   darkBlue: "#142a5b",
   white: "#fff",
   lightPurple: "#f0f2ff",

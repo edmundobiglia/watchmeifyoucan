@@ -3,11 +3,11 @@ import axios from "axios";
 
 import convertSnakeToCamelCase from "../../utils/convertSnakeToCamelCase";
 
-import { WatchListContext } from "../../contexts/watchlist/WatchListProvider";
+import { WatchListContext } from "../../contexts/watchlist/watchListProvider";
 import {
   setWatchListAction,
   sortByReleaseDateAction,
-} from "../../contexts/watchlist/actions/watchListActions";
+} from "../../contexts/watchlist/watchListActions";
 
 import WatchItem from "../WatchItem";
 import Loader from "../Loader";

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { colors } from "../../themes/theme";
+
 export const NoWatchList = styled.div`
   display: flex;
   justify-content: center;
@@ -74,7 +76,7 @@ export const Error = styled.div`
   align-items: center;
 
   span {
-    color: #de385d;
+    color: ${colors.red};
     font-size: 15px;
     font-style: italic;
   }

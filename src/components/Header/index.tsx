@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import DarkModeSwitch from "../DarkModeSwitch";
 
@@ -6,18 +7,15 @@ import Logo from "../Logo";
 
 import { AppHeader } from "./styles";
 
-interface Props {
-  darkMode: boolean;
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Header = ({ darkMode, setDarkMode }: Props) => {
+const Header = () => {
   return (
     <AppHeader>
       <div className="wrapper">
-        <Logo height={32} className="logo" />
+        <Link to="/">
+          <Logo height={32} className="logo" />
+        </Link>
 
-        <DarkModeSwitch darkMode={darkMode} setDarkMode={setDarkMode} />
+        <DarkModeSwitch />
       </div>
     </AppHeader>
   );

@@ -1,19 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { DarkModeContext } from "../../contexts/darkMode/DarkModeProvider";
+import { toggleDarkModeAction } from "../../contexts/darkMode/darkModeActions";
 
 import { Switch } from "./styles";
 
-interface Props {
-  darkMode: boolean;
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const DarkModeSwitch = () => {
+  const { state, dispatch } = useContext(DarkModeContext);
 
-const DarkModeSwitch = ({ darkMode, setDarkMode }: Props) => {
   return (
-    <Switch
-      className="dark-mode-switch"
-      onClick={() => setDarkMode((previousValue) => !previousValue)}
-    >
-      <div className={`dark-mode-indicator ${darkMode && "dark-mode-on"}`}></div>
+    <Switch className="dark-mode-switch" onClick={() => dispatch(toggleDarkModeAction())}>
+      <div className={`dark-mode-indicator ${state && "dark-mode-on"}`}></div>
     </Switch>
   );
 };

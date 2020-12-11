@@ -1,10 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-
-import { WatchListContext } from "../../contexts/watchlist/watchListProvider";
-
-import { RemoveFromWatchlistAction } from "../../contexts/watchlist/watchListActions";
 
 import GlassesIcon from "../GlassesIcon";
 
@@ -15,6 +11,19 @@ import loaderIcon from "../../assets/loader.svg";
 
 import { Item, DummyPoster, Warning } from "./styles";
 
+interface WatchListItem {
+  id: string;
+  tmdbId: number;
+  title: string;
+  synopsis: string;
+  posterUrl: string;
+  releaseDate: Date;
+  addedDate: Date;
+  mediaType: string;
+  genres: string;
+  isWatched: boolean;
+}
+
 interface Props {
   id: string;
   tmdbId: number;
@@ -24,6 +33,7 @@ interface Props {
   releaseDate: Date;
   genres: string;
   isWatched: boolean;
+  setWatchedList: React.Dispatch<React.SetStateAction<WatchListItem[]>>;
 }
 
 const WatchItem = ({
@@ -34,9 +44,8 @@ const WatchItem = ({
   releaseDate,
   genres,
   isWatched,
+  setWatchedList,
 }: Props) => {
-  const { dispatch } = useContext(WatchListContext);
-
   const [warning, setWarning] = useState("");
   const [settingAsWatched, setSettingAsWatched] = useState(false);
 
@@ -44,17 +53,23 @@ const WatchItem = ({
     setWarning("removal");
   };
 
-  const handleRemoveFromWatchlist = async () => {
+  const removeFromWatchedList = () => {
+    setWatchedList((previousWatchedList) =>
+      previousWatchedList.filter((watchedListItem) => watchedListItem.id !== id)
+    );
+  };
+
+  const handleRemoveFromWatchedlist = async () => {
     try {
       await axios.delete(`http://localhost:3333/watchlist/${id}`);
 
-      dispatch(RemoveFromWatchlistAction(id));
+      removeFromWatchedList();
     } catch (err) {
       setWarning("error");
     }
   };
 
-  const handleSetAsWatched = async () => {
+  const handleSetAsNotWatched = async () => {
     setSettingAsWatched(true);
 
     try {
@@ -66,7 +81,7 @@ const WatchItem = ({
 
       setSettingAsWatched(false);
 
-      dispatch(RemoveFromWatchlistAction(id));
+      removeFromWatchedList();
     } catch (err) {
       setWarning("error");
     }
@@ -91,7 +106,7 @@ const WatchItem = ({
             {warning === "removal" && (
               <div>
                 Confirm removal?
-                <button onClick={handleRemoveFromWatchlist}>Yes</button>{" "}
+                <button onClick={handleRemoveFromWatchedlist}>Yes</button>{" "}
                 <button onClick={() => setWarning("")}>No</button>
               </div>
             )}
@@ -114,11 +129,11 @@ const WatchItem = ({
 
       {!warning && (
         <div className="actions">
-          <button onClick={handleSetAsWatched}>
+          <button onClick={handleSetAsNotWatched}>
             {settingAsWatched ? (
               <img src={loaderIcon} alt="Loader" />
             ) : (
-              <img src={checkIcon} alt="Mark as Watched" />
+              <img src={checkIcon} alt="Mark As Not Watched" />
             )}
           </button>
 
