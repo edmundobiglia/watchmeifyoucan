@@ -19,3 +19,8 @@ export const RemoveFromWatchlistAction = (id: string) => ({
   type: "REMOVE_FROM_WATCHLIST",
   id,
 });
+
+export const SetAsWatchedAction = (id: string) => ({
+  type: "SET_AS_WATCHED",
+  id,
+});

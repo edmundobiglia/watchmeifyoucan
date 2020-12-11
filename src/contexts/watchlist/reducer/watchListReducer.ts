@@ -67,18 +67,7 @@ const watchListReducer = (state: WatchItem[], action: WatchListActions) => {
       }
 
     case "SET_AS_WATCHED":
-      return state.map((watchItem) => {
-        const previousWatchedState = watchItem.isWatched;
-
-        if (watchItem.id === action.id) {
-          return {
-            ...watchItem,
-            isWatched: !previousWatchedState,
-          };
-        }
-
-        return watchItem;
-      });
+      return state.filter((watchItem) => watchItem.id !== action.id);
 
     case "REMOVE_FROM_WATCHLIST":
       return state.filter((watchItem) => watchItem.id !== action.id);

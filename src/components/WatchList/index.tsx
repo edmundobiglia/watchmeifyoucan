@@ -12,10 +12,11 @@ import {
 import WatchItem from "../WatchItem";
 import Loader from "../Loader";
 
-import { NoWatchList, FilterContainer } from "./styles";
+import { NoWatchList, FilterContainer, Error } from "./styles";
 
 import tvIcon from "../../assets/tv.svg";
 import sortIcon from "../../assets/sort.svg";
+import errorIcon from "../../assets/error.svg";
 
 interface WatchListItem {
   id: string;
@@ -50,17 +51,29 @@ const WatchList = () => {
   const [watchList, setWatchList] = useState<WatchListItem[]>(state);
   const [filter, setFilter] = useState("");
   const [sortByReleaseDate, setSortByReleaseDate] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3333/watchlist").then((response) => {
-      const formattedWatchList = response.data.map((watchListItem: WatchListItemDTO) =>
-        convertSnakeToCamelCase(watchListItem)
-      );
+    axios
+      .get("http://localhost:3333/watchlist")
+      .then((response) => {
+        const formattedWatchList = response.data.map((watchListItem: WatchListItemDTO) =>
+          convertSnakeToCamelCase(watchListItem)
+        );
 
-      dispatch(setWatchListAction(formattedWatchList));
+        dispatch(setWatchListAction(formattedWatchList));
 
-      setLoading(false);
-    });
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.response.data.error) {
+          setError(err.response.data.error);
+        } else {
+          setError("An error occurred. Try reloading the page.");
+        }
+
+        setLoading(false);
+      });
   }, [dispatch]);
 
   useEffect(() => {
@@ -86,6 +99,17 @@ const WatchList = () => {
   if (loading) {
     return <Loader />;
   }
+
+  if (error) {
+    return (
+      <Error className="error">
+        <img src={errorIcon} alt="Error" />
+
+        <span>{error}</span>
+      </Error>
+    );
+  }
+
   return (
     <>
       {state.length === 0 ? (

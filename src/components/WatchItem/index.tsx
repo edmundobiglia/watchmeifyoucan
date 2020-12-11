@@ -46,6 +46,22 @@ const WatchItem = ({
     }
   };
 
+  const handleSetAsWatched = async () => {
+    try {
+      console.log("before patch operation");
+
+      await axios.patch(`http://localhost:3333/watchlist/${id}`, {
+        is_watched: !isWatched,
+      });
+
+      console.log("after patch operation");
+
+      dispatch(RemoveFromWatchlistAction(id));
+    } catch (err) {
+      console.log("error, item not removed");
+    }
+  };
+
   return (
     <Item>
       {posterUrl ? (
@@ -67,7 +83,7 @@ const WatchItem = ({
       </div>
 
       <div className="actions">
-        <button>
+        <button onClick={handleSetAsWatched}>
           <Logo className="watched-btn" height={18} />
         </button>
 

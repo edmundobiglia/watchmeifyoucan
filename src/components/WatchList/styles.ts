@@ -67,3 +67,20 @@ export const FilterContainer = styled.div`
     margin-left: 26px;
   }
 `;
+
+export const Error = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: #de385d;
+    font-size: 15px;
+    font-style: italic;
+  }
+
+  img {
+    width: 18px;
+    margin-right: 9px;
+  }
+`;
